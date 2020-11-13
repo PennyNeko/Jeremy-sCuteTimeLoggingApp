@@ -13,9 +13,12 @@ namespace Jeremy_sCuteTimeLoggingApp
     {
         static App()
         {
-            _clientApp = PublicClientApplicationBuilder.Create(ClientId).WithRedirectUri("https://login.microsoftonline.com/common/oauth2/nativeclient")
-                .WithAuthority(AzureCloudInstance.AzurePublic, Tenant)
-                .Build();
+
+            _clientApp = PublicClientApplicationBuilder
+            .Create(ClientId).WithRedirectUri("https://login.microsoftonline.com/common/oauth2/nativeclient")
+            .Build();
+            _eventDataContext = new EventDataContext();
+
         }
 
         // Below are the clientId (Application Id) of your app registration and the tenant information.
@@ -26,6 +29,8 @@ namespace Jeremy_sCuteTimeLoggingApp
         //   - for any Work or School accounts, use `organizations`
         //   - for any Work or School accounts, or Microsoft personal account, use `common`
         //   - for Microsoft Personal account, use consumers
+        private static EventDataContext _eventDataContext; 
+
         private static string ClientId = "2068be73-3d10-4717-a80b-d456f2687f7d";
 
         private static string Tenant = "common";
@@ -33,5 +38,7 @@ namespace Jeremy_sCuteTimeLoggingApp
         private static IPublicClientApplication _clientApp;
 
         public static IPublicClientApplication PublicClientApp { get { return _clientApp; } }
+
+        public static EventDataContext EventDataContext { get => _eventDataContext;}
     }
 }
