@@ -13,23 +13,25 @@ namespace Jeremy_sCuteTimeLoggingApp
     public class WorkEntry : INotifyPropertyChanged
     {
 
-        private string _name;
+        string _name;
         string _description;
-        DateTime _startTimestamp;
-        DateTime _endTimestamp;
+        DateTime? _startTimestamp;
+        DateTime? _endTimestamp;
         string _link;
         string _creator;
         string _source;
+        private DateTime? _date;
 
-        public WorkEntry(string name, string description, DateTime startTimestamp, DateTime endTimestamp, string link, string creator, string source)
+        public WorkEntry(string name, string description, DateTime? startTimestamp, DateTime? endTimestamp, string link, string creator, string source)
         {
             Name = name;
             Description = description;
-            StartTimestamp = startTimestamp;
-            EndTimestamp = endTimestamp;
+            StartTime = startTimestamp;
+            EndTime = endTimestamp;
             Link = link;
             Creator = creator;
             Source = source;
+            Date = startTimestamp?.Date;
         }
 
         //subject
@@ -39,11 +41,13 @@ namespace Jeremy_sCuteTimeLoggingApp
         public string Description
         { get { return _description; } set { _description = value; OnPropertyChanged(); } }
         //start
-        public DateTime StartTimestamp
+        public DateTime? StartTime
         { get { return _startTimestamp; } set { _startTimestamp = value; OnPropertyChanged(); } }
         //end
-        public DateTime EndTimestamp
+        public DateTime? EndTime
         { get { return _endTimestamp; } set { _endTimestamp = value; OnPropertyChanged(); } }
+        
+        public DateTime? Date { get { return _date; } private set { _date = value; } }
         //webLink
         public string Link
         { get { return _link; } set { _link = value; OnPropertyChanged(); } }

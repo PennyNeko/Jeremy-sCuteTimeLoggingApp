@@ -1,4 +1,5 @@
-﻿using Microsoft.Identity.Client;
+﻿using Atlassian.Jira;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,11 +14,12 @@ namespace Jeremy_sCuteTimeLoggingApp
     {
         static App()
         {
-
+            var appSettings = ConfigurationManager.AppSettings;
             _clientApp = PublicClientApplicationBuilder
             .Create(ClientId).WithRedirectUri("https://login.microsoftonline.com/common/oauth2/nativeclient")
             .Build();
-            _eventDataContext = new EventDataContext();
+            _workEntryDataContext = new WorkEntryDataContext();
+            _jiraClient = Jira.CreateOAuthRestClient("https://jeremyscuteloggingapp.atlassian.net/", appSettings["ConsumerKey"], appSettings["ConsumerSecret"], appSettings["AccessToken"],appSettings["TokenSecret"]);
 
         }
 
@@ -29,16 +31,20 @@ namespace Jeremy_sCuteTimeLoggingApp
         //   - for any Work or School accounts, use `organizations`
         //   - for any Work or School accounts, or Microsoft personal account, use `common`
         //   - for Microsoft Personal account, use consumers
-        private static EventDataContext _eventDataContext; 
+        private static WorkEntryDataContext _workEntryDataContext; 
 
         private static string ClientId = "2068be73-3d10-4717-a80b-d456f2687f7d";
 
         private static string Tenant = "common";
 
+        private static Jira _jiraClient;
+
         private static IPublicClientApplication _clientApp;
 
         public static IPublicClientApplication PublicClientApp { get { return _clientApp; } }
 
-        public static EventDataContext EventDataContext { get => _eventDataContext;}
+        public static Jira JiraClient { get { return _jiraClient; } }
+
+        public static WorkEntryDataContext WorkEntryDataContext { get => _workEntryDataContext;}
     }
 }

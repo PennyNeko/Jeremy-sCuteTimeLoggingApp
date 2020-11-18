@@ -28,8 +28,8 @@ namespace Jeremy_sCuteTimeLoggingApp
             foreach (var ev in events)
             {
                 eventList.Add(new WorkEntry(ev.Subject, ev.BodyPreview, ev.Start.ToDateTime(), ev.End.ToDateTime(), ev.WebLink, ev.Organizer.EmailAddress.Name, "Outlook"));
-            }
-            return eventList;
+            }           
+            return eventList;   
         }
     }
 
