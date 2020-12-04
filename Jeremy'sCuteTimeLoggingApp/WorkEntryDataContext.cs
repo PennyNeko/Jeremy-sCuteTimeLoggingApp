@@ -1,6 +1,8 @@
 ﻿using Atlassian.Jira;
+using Jeremy_sCuteTimeLoggingApp.Commands;
 using Microsoft.Graph;
 using Microsoft.Graph.Auth;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,33 +12,77 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
+using System.Windows.Input;
 
 namespace Jeremy_sCuteTimeLoggingApp
 {
-    public class WorkEntryDataContext: INotifyPropertyChanged
+    public class WorkEntryDataContext : INotifyPropertyChanged, IDataContext
     {
         string[] scopes = new string[] { "Calendars.Read" };
 
-        private ObservableCollection<WorkEntry> events;
+        private ICommand fetchEventsCommand;
+        public ICommand FetchEventsCommand { get { if (fetchEventsCommand == null) { fetchEventsCommand = new FetchEventsCommand(this); } return fetchEventsCommand; } set { fetchEventsCommand = value; } }
+
+        private ICommand fetchIssuesCommand;
+        public ICommand FetchIssuesCommand { get { if (fetchIssuesCommand == null) { fetchIssuesCommand = new FetchIssuesCommand(this); } return fetchIssuesCommand; } set { fetchIssuesCommand = value; } }
+
+        private ICommand saveEntriesCommand;
+        public ICommand SaveEntriesCommand
+        {
+            get
+            {
+                if (saveEntriesCommand == null)
+                {
+                    saveEntriesCommand = new SaveEntriesCommand(this);
+                }
+                return saveEntriesCommand;
+            }
+            set { saveEntriesCommand = value; }
+        }
+
+        private ICommand copyToClipboardCommand;
+        public ICommand CopyToClipboardCommand
+        {
+            get
+            {
+                if (copyToClipboardCommand == null)
+                {
+                    copyToClipboardCommand = new CopyToClipboardCommand(this);
+                }
+                return copyToClipboardCommand;
+            }
+            set { copyToClipboardCommand = value; }
+        }
+
+        private CollectionViewSource workEntriesViewSource = new CollectionViewSource();
+        public CollectionViewSource WorkEntriesViewSource { get { return workEntriesViewSource; } set { workEntriesViewSource = value; } }
+
+
+        private ObservableCollection<WorkEntry> workEntries = new ObservableCollection<WorkEntry>();
         private WorkEntry selectedDataGridItem;
 
         public WorkEntry SelectedDataGridItem
         {
             get { return selectedDataGridItem; }
-            set { selectedDataGridItem = value;
+            set
+            {
+                selectedDataGridItem = value;
                 OnPropertyChanged();
             }
-        } 
+        }
+        private DateTime todayDate = DateTime.Now.Date;
+        public DateTime TodayDate { get { return todayDate; } set { todayDate = value; } }
 
-        public ObservableCollection<WorkEntry> Events
+        public ObservableCollection<WorkEntry> WorkEntries
         {
             get
             {
-                return events;
+                return workEntries;
             }
             set
             {
-                events = value;
+                workEntries = value;
                 OnPropertyChanged();
             }
         }
@@ -45,33 +91,6 @@ namespace Jeremy_sCuteTimeLoggingApp
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-
-        public async void GetJiraEntries()
-        {
-            ICollection<WorkEntry> jiraEntries = new ObservableCollection<WorkEntry>();
-            var jira = App.JiraClient;
-            var recentIssues = await jira.Issues.GetIssuesFromJqlAsync(new IssueSearchOptions("issue in issueHistory()"));
-            foreach(var i in recentIssues)
-            {
-                Events.Add(new WorkEntry(i.Summary, i.Description, i.Created, i.Created, jira.Url+"browse/"+i.Key, i.Reporter, "Jira"));
-            }
-            ;
-
-        }
-
-        public async void UpdateEventEntries()
-        {
-            var app = App.PublicClientApp;
-
-            InteractiveAuthenticationProvider authProvider = new InteractiveAuthenticationProvider(app, scopes);
-
-            GraphServiceClient graphClient = new GraphServiceClient(authProvider);
-
-            EventFetcher eventFetcher = new EventFetcher(graphClient);
-
-            Events = new ObservableCollection<WorkEntry>(await eventFetcher.GetEventsAsync());
-            GetJiraEntries();
         }
     }
 }

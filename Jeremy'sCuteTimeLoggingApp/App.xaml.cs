@@ -19,8 +19,7 @@ namespace Jeremy_sCuteTimeLoggingApp
             .Create(ClientId).WithRedirectUri("https://login.microsoftonline.com/common/oauth2/nativeclient")
             .Build();
             _workEntryDataContext = new WorkEntryDataContext();
-            _jiraClient = Jira.CreateOAuthRestClient("https://jeremyscuteloggingapp.atlassian.net/", appSettings["ConsumerKey"], appSettings["ConsumerSecret"], appSettings["AccessToken"],appSettings["TokenSecret"]);
-
+            _jiraClient = Jira.CreateRestClient(ConfigurationManager.AppSettings["JiraDomain"], ConfigurationManager.AppSettings["JiraEmail"], ConfigurationManager.AppSettings["JiraToken"]);
         }
 
         // Below are the clientId (Application Id) of your app registration and the tenant information.
