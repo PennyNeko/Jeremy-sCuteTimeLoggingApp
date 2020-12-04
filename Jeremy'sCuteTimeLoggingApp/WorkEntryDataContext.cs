@@ -17,8 +17,8 @@ using System.Windows.Input;
 
 namespace Jeremy_sCuteTimeLoggingApp
 {
-    public class WorkEntryDataContext : INotifyPropertyChanged, IDataContext
-    {
+    public class WorkEntryDataContext : INotifyPropertyChanged
+        {
         string[] scopes = new string[] { "Calendars.Read" };
 
         private ICommand fetchEventsCommand;

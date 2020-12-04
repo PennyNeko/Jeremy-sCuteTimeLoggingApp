@@ -20,16 +20,17 @@
     <PublishUrl>\\GS66\TX\Jeremy\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+    <UpdateUrl>\\GS66\TX\Jeremy\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -105,7 +106,6 @@
     <Compile Include="Commands\CopyToClipboardCommand.cs" />
     <Compile Include="Commands\FetchIssuesCommand.cs" />
     <Compile Include="IssueFetcher.cs" />
-    <Compile Include="IDataContext.cs" />
     <Compile Include="Commands\FetchEventsCommand.cs" />
     <Compile Include="WorkEntryDataContext.cs" />
     <Compile Include="Converters\TitleConverter.cs" />
@@ -139,7 +139,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="UserSettings.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
