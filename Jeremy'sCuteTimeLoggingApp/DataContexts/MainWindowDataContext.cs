@@ -1,23 +1,14 @@
-﻿using Atlassian.Jira;
-using Jeremy_sCuteTimeLoggingApp.Commands;
-using Microsoft.Graph;
-using Microsoft.Graph.Auth;
-using Microsoft.Identity.Client;
+﻿using Jeremy_sCuteTimeLoggingApp.Commands;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Drawing.Design;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace Jeremy_sCuteTimeLoggingApp
+namespace Jeremy_sCuteTimeLoggingApp.DataContexts
 {
-    public class WorkEntryDataContext : INotifyPropertyChanged
+    public class MainWindowDataContext : INotifyPropertyChanged
         {
         string[] scopes = new string[] { "Calendars.Read" };
 
@@ -41,24 +32,14 @@ namespace Jeremy_sCuteTimeLoggingApp
             set { saveEntriesCommand = value; }
         }
 
-        private ICommand copyToClipboardCommand;
-        public ICommand CopyToClipboardCommand
-        {
-            get
-            {
-                if (copyToClipboardCommand == null)
-                {
-                    copyToClipboardCommand = new CopyToClipboardCommand(this);
-                }
-                return copyToClipboardCommand;
-            }
-            set { copyToClipboardCommand = value; }
-        }
+        private ICommand findAddIssueCommand;
+        public ICommand FindAddIssueCommand { get { if (findAddIssueCommand == null) { findAddIssueCommand = new FindAddIssueCommand(this); } return findAddIssueCommand; } set { findAddIssueCommand = value; } }
+
 
         private CollectionViewSource workEntriesViewSource = new CollectionViewSource();
         public CollectionViewSource WorkEntriesViewSource { get { return workEntriesViewSource; } set { workEntriesViewSource = value; } }
 
-
+        
         private ObservableCollection<WorkEntry> workEntries = new ObservableCollection<WorkEntry>();
         private WorkEntry selectedDataGridItem;
 
@@ -71,6 +52,9 @@ namespace Jeremy_sCuteTimeLoggingApp
                 OnPropertyChanged();
             }
         }
+
+
+
         private DateTime todayDate = DateTime.Now.Date;
         public DateTime TodayDate { get { return todayDate; } set { todayDate = value; } }
 

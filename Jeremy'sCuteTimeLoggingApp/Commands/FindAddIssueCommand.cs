@@ -1,28 +1,37 @@
 ﻿using Jeremy_sCuteTimeLoggingApp.DataContexts;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Windows;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Jeremy_sCuteTimeLoggingApp.Commands
 {
-    class CopyToClipboardCommand : ICommand
+    class FindAddIssueCommand : ICommand
     {
         public event EventHandler CanExecuteChanged { add { CommandManager.RequerySuggested += value; } remove { CommandManager.RequerySuggested -= value; } }
-        private WorkEntryDataContext _dataContext;
 
-        public CopyToClipboardCommand(WorkEntryDataContext dataContext)
+        MainWindowDataContext _dataContext;
+
+        public FindAddIssueCommand(MainWindowDataContext dataContext)
         {
             _dataContext = dataContext;
         }
 
         public bool CanExecute(object parameter)
         {
-            return _dataContext.WorkEntry != null;
+            return false;
         }
 
         public void Execute(object parameter)
         {
-            Clipboard.SetData(DataFormats.Text, _dataContext.WorkEntry.Link);
+            WorkEntry workEntry;
+            
+            //_dataContext.WorkEntries.Add(workEntry);
         }
+
+        
     }
 }

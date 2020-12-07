@@ -1,4 +1,5 @@
-﻿using Microsoft.Graph;
+﻿using Jeremy_sCuteTimeLoggingApp.DataContexts;
+using Microsoft.Graph;
 using Microsoft.Graph.Auth;
 using System;
 using System.Collections.Generic;
@@ -8,15 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Jeremy_sCuteTimeLoggingApp
+namespace Jeremy_sCuteTimeLoggingApp.Commands
 {
     public class FetchEventsCommand : ICommand
     {
         public event EventHandler CanExecuteChanged { add { CommandManager.RequerySuggested += value; } remove { CommandManager.RequerySuggested -= value; } }
 
-        WorkEntryDataContext _dataContext;
+        MainWindowDataContext _dataContext;
 
-        public FetchEventsCommand(WorkEntryDataContext dataContext)
+        public FetchEventsCommand(MainWindowDataContext dataContext)
         {
             _dataContext = dataContext;
         }

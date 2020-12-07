@@ -1,17 +1,18 @@
-﻿using System;
+﻿using Jeremy_sCuteTimeLoggingApp.DataContexts;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
-namespace Jeremy_sCuteTimeLoggingApp
+namespace Jeremy_sCuteTimeLoggingApp.Commands
 {
     internal class FetchIssuesCommand : ICommand
     {
         public event EventHandler CanExecuteChanged { add { CommandManager.RequerySuggested += value; } remove { CommandManager.RequerySuggested -= value; } }
 
-        WorkEntryDataContext _dataContext;
+        MainWindowDataContext _dataContext;
 
-        public FetchIssuesCommand(WorkEntryDataContext workEntryDataContext)
+        public FetchIssuesCommand(MainWindowDataContext workEntryDataContext)
         {
             _dataContext = workEntryDataContext;
         }
@@ -23,6 +24,8 @@ namespace Jeremy_sCuteTimeLoggingApp
 
         public async void Execute(object parameter)
         {
+            IssueSuggestionsFetcher suggestionsFetcher = new IssueSuggestionsFetcher();
+            suggestionsFetcher.GetWorkEntriesAsync("1");
             var issueFetcher = new IssueFetcher(App.JiraClient);
             var issues = await issueFetcher.GetRecentIssuesAsync();
 

@@ -4,42 +4,42 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Jeremy_sCuteTimeLoggingApp"
+        xmlns:dataContexts="clr-namespace:Jeremy_sCuteTimeLoggingApp.DataContexts"
+        xmlns:converters="clr-namespace:Jeremy_sCuteTimeLoggingApp.Converters"
         xmlns:src="Jeremy_sCuteTimeLoggingApp.MainWindow"
-        xmlns:Properties="clr-namespace:Jeremy_sCuteTimeLoggingApp.Properties" xmlns:Forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms" d:DataContext="{d:DesignInstance Type=local:WorkEntryDataContext}" x:Class="Jeremy_sCuteTimeLoggingApp.MainWindow"
+        xmlns:controls="clr-namespace:Jeremy_sCuteTimeLoggingApp.UserControls"
+        xmlns:Properties="clr-namespace:Jeremy_sCuteTimeLoggingApp.Properties" xmlns:Forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms" d:DataContext="{d:DesignInstance Type=dataContexts:MainWindowDataContext}" x:Class="Jeremy_sCuteTimeLoggingApp.MainWindow"
     mc:Ignorable="d"
-        Title="MainWindow" Height="477" Width="800">
+        Title="Jeremy's Cute Time Logging App~" Height="477" Width="800">
     <Window.Resources>
-        <local:DateTimeConverter x:Key="dateTimeConverter"/>
-        <local:TitleConverter x:Key="titleConverter"/>
-        <Image x:Key="copyImage" Source="copy-content.png"/>
+        <converters:DateTimeConverter x:Key="dateTimeConverter"/>
+        <converters:TitleConverter x:Key="titleConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="173*"/>
             <ColumnDefinition Width="91*"/>
         </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1" Margin="10,10,11,10">
+            <Label x:Name="TitleLabel" Content="{Binding TodayDate, Converter={StaticResource titleConverter}}" Margin="0,0,0,5"/>
+            <controls:WorkEntryDetails DataContext="{Binding SelectedDataGridItem}" Width="Auto" VerticalAlignment="Stretch" Margin="0"/>
+        </StackPanel>
         <UniformGrid Grid.Column="1" HorizontalAlignment="Left" Height="107" Margin="0" VerticalAlignment="Bottom" Width="273">
             <Button x:Name="FetchEventsButton" Content="Fetch Events" Margin="10" Command="{Binding FetchEventsCommand}" RenderTransformOrigin="-0.892,0.865"/>
             <Button x:Name="FetchIssuesButton" Content="Fetch Issues" Margin="10" Command="{Binding FetchIssuesCommand}" RenderTransformOrigin="-0.892,0.865"/>
             <Button x:Name="SaveEntriesButton" Content="Save Entries" Margin="10" Command="{Binding SaveEntriesCommand}"/>
+            <Button x:Name="CreateEntryButton" Content="Create Entry" Margin="10" Command="{Binding FindAddIssueCommand}"/>
         </UniformGrid>
-        <StackPanel Grid.Column="2" VerticalAlignment="Top" Height="307.013">
-            <Label x:Name="TitleLabel" Content="{Binding TodayDate, Converter={StaticResource titleConverter}}" VerticalAlignment="Top" Margin="10,30,10,10"/>
-            <TextBox x:Name="NameTextBox" TextWrapping="Wrap" Text="{Binding SelectedDataGridItem.Name}" VerticalAlignment="Top" Margin="10,5"/>
-            <TextBox x:Name="DescriptionTextBox" TextWrapping="Wrap" Text="{Binding SelectedDataGridItem.Description}" VerticalAlignment="Top" MinHeight="50" Margin="10,5" Height="20"/>
-            <TextBox x:Name="StartDateTextBox" TextWrapping="Wrap" Text="{Binding Path=SelectedDataGridItem.StartTime, Converter={StaticResource dateTimeConverter}}" VerticalAlignment="Top" Margin="10,5"/>
-            <TextBox x:Name="EndDateTextBox" TextWrapping="Wrap" Text="{Binding Path=SelectedDataGridItem.EndTime, Converter={StaticResource dateTimeConverter}}" VerticalAlignment="Top" Margin="10,5"/>
-            <TextBox x:Name="IdTextBox" TextWrapping="WrapWithOverflow" Text="{Binding SelectedDataGridItem.Id}" Margin="10,5" VerticalAlignment="Top"/>
-            <TextBox x:Name="SourceTextBox" TextWrapping="WrapWithOverflow" Text="{Binding SelectedDataGridItem.Source}" Margin="10,5" VerticalAlignment="Top" IsReadOnly="True" Background="Transparent" BorderThickness="0"/>
-            <Grid Margin="10,5">
-                <TextBox x:Name="LinkTextBox" TextWrapping="WrapWithOverflow" Text="{Binding SelectedDataGridItem.Link}" Margin="0" VerticalAlignment="Top" IsReadOnly="True" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left"/>
-                <Button x:Name="CopyToClipboardButton" Content="{StaticResource copyImage}" Command="{Binding CopyToClipboardCommand}" HorizontalAlignment="Right" Height="22" Margin="0" Width="21" RenderTransformOrigin="0.2,0.25" Foreground="{x:Null}" VerticalContentAlignment="Top" HorizontalContentAlignment="Center"/>
-            </Grid>
-        </StackPanel>
         <StackPanel VerticalAlignment="Top">
-            <DataGrid x:Name="WorkEntryDataGrid" Margin="10" ItemsSource="{Binding WorkEntries}" SelectedItem="{Binding SelectedDataGridItem}" SelectionMode="Single" AutoGenerateColumns="False">
+            <DataGrid x:Name="WorkEntryDataGrid" Margin="10" ItemsSource="{Binding WorkEntries}" SelectedItem="{Binding SelectedDataGridItem}" SelectionMode="Single" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
                 <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Binding="{Binding IsSelected}" ClipboardContentBinding="{x:Null}" Header="Selected"/>
+                    <DataGridTemplateColumn Header="Selected">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Binding="{Binding Name}" ClipboardContentBinding="{x:Null}" Header="Title" MaxWidth="200" IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding StartTime, Converter={StaticResource dateTimeConverter}}" ClipboardContentBinding="{x:Null}" Header="Start Time" IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding EndTime, Converter={StaticResource dateTimeConverter}}" ClipboardContentBinding="{x:Null}" Header="End Time" IsReadOnly="True"/>

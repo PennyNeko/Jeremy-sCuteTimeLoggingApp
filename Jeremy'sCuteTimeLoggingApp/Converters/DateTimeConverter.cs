@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Jeremy_sCuteTimeLoggingApp
+namespace Jeremy_sCuteTimeLoggingApp.Converters
 {
     [ValueConversion(typeof(DateTime), typeof(String))]
-    class DateTimeConverter : IValueConverter
+    public class DateTimeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

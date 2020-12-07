@@ -1,4 +1,5 @@
 ﻿using Atlassian.Jira;
+using Jeremy_sCuteTimeLoggingApp.DataContexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,9 @@ namespace Jeremy_sCuteTimeLoggingApp.Commands
     {
         public event EventHandler CanExecuteChanged { add { CommandManager.RequerySuggested += value; } remove { CommandManager.RequerySuggested -= value; } }
 
-        WorkEntryDataContext _dataContext;
+        MainWindowDataContext _dataContext;
 
-        public SaveEntriesCommand(WorkEntryDataContext dataContext)
+        public SaveEntriesCommand(MainWindowDataContext dataContext)
         {
             _dataContext = dataContext;
         }

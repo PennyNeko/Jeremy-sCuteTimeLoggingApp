@@ -30,7 +30,7 @@
     <UpdateUrl>\\GS66\TX\Jeremy\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>4</ApplicationRevision>
+    <ApplicationRevision>5</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -67,13 +67,21 @@
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -93,6 +101,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\DateTimeConverter.cs" />
+    <Compile Include="IssueSuggestion.cs" />
+    <Compile Include="IssueSuggestionsFetcher.cs" />
+    <Compile Include="UserControls\WorkEntryDetails.xaml.cs">
+      <DependentUpon>WorkEntryDetails.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -101,13 +115,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Commands\FindAddIssueCommand.cs" />
     <Compile Include="Commands\SaveEntriesCommand.cs" />
-    <Compile Include="Converters\DateTimeConverter.cs" />
     <Compile Include="Commands\CopyToClipboardCommand.cs" />
     <Compile Include="Commands\FetchIssuesCommand.cs" />
     <Compile Include="IssueFetcher.cs" />
     <Compile Include="Commands\FetchEventsCommand.cs" />
-    <Compile Include="WorkEntryDataContext.cs" />
+    <Compile Include="DataContexts\WorkEntryDataContext.cs" />
+    <Compile Include="DataContexts\MainWindowDataContext.cs" />
     <Compile Include="Converters\TitleConverter.cs" />
     <Compile Include="WorkEntry.cs" />
     <Compile Include="EventFetcher.cs" />
@@ -115,6 +130,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControls\WorkEntryDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -135,6 +154,8 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Jeremy%27sCuteTimeLoggingApp_TemporaryKey.pfx" />
+    <None Include="json1.json" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -187,13 +208,13 @@
       <Version>5.0.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Graph">
-      <Version>3.19.0</Version>
+      <Version>3.20.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Graph.Auth">
-      <Version>1.0.0-preview.5</Version>
+      <Version>1.0.0-preview.6</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Identity.Client">
-      <Version>4.22.0</Version>
+      <Version>4.23.0</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
