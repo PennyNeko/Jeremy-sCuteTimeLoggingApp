@@ -16,19 +16,11 @@ namespace Jeremy_sCuteTimeLoggingApp
             _graphClient = graphClient;
         }
 
-        public async Task<IEnumerable<WorkEntry>> GetEventsAsync()
-        {
-
-            var events = await _graphClient.Me.Events.Request().GetAsync();
-            return GetOutlookEvents(events);
-            //TO-DO: error handling
-
-        }
-
         public async Task<IEnumerable<WorkEntry>> GetDaysEventsAsync(DateTime date)
         {
-            var events = await _graphClient.Me.Events.Request().GetAsync();
-            return GetOutlookEvents(events.Where(x => x.Start.ToDateTime().Date == date.Date));
+            var events = await _graphClient.Me.Calendar.CalendarView.Request(new List<QueryOption>() { new QueryOption("startDateTime", date.ToUniversalTime().Date.ToString("s")), new QueryOption("endDateTime", date.ToUniversalTime().AddDays(1).Date.ToString("s")) }).GetAsync();
+            
+            return GetOutlookEvents(events);
         }
 
         private IEnumerable<WorkEntry> GetOutlookEvents(IEnumerable<Event> events)
