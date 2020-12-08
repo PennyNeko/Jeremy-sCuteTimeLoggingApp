@@ -8,44 +8,45 @@
         xmlns:converters="clr-namespace:Jeremy_sCuteTimeLoggingApp.Converters"
         xmlns:src="Jeremy_sCuteTimeLoggingApp.MainWindow"
         xmlns:controls="clr-namespace:Jeremy_sCuteTimeLoggingApp.UserControls"
-        xmlns:Properties="clr-namespace:Jeremy_sCuteTimeLoggingApp.Properties" xmlns:Forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms" d:DataContext="{d:DesignInstance Type=dataContexts:MainWindowDataContext}" x:Class="Jeremy_sCuteTimeLoggingApp.MainWindow"
+        xmlns:Properties="clr-namespace:Jeremy_sCuteTimeLoggingApp.Properties" xmlns:Forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" d:DataContext="{d:DesignInstance Type={x:Type dataContexts:MainWindowDataContext}}" x:Class="Jeremy_sCuteTimeLoggingApp.MainWindow"
     mc:Ignorable="d"
-        Title="Jeremy's Cute Time Logging App~" Height="477" Width="800">
+        Title="Jeremy's Cute Time Logging App~" Height="475" Width="800">
     <Window.Resources>
         <converters:DateTimeConverter x:Key="dateTimeConverter"/>
         <converters:TitleConverter x:Key="titleConverter"/>
     </Window.Resources>
-    <Grid>
+    <Grid Width="790">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="173*"/>
             <ColumnDefinition Width="91*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="1" Margin="10,10,11,10">
-            <Label x:Name="TitleLabel" Content="{Binding TodayDate, Converter={StaticResource titleConverter}}" Margin="0,0,0,5"/>
-            <controls:WorkEntryDetails DataContext="{Binding SelectedDataGridItem}" Width="Auto" VerticalAlignment="Stretch" Margin="0"/>
-        </StackPanel>
-        <UniformGrid Grid.Column="1" HorizontalAlignment="Left" Height="107" Margin="0" VerticalAlignment="Bottom" Width="273">
-            <Button x:Name="FetchEventsButton" Content="Fetch Events" Margin="10" Command="{Binding FetchEventsCommand}" RenderTransformOrigin="-0.892,0.865"/>
-            <Button x:Name="FetchIssuesButton" Content="Fetch Issues" Margin="10" Command="{Binding FetchIssuesCommand}" RenderTransformOrigin="-0.892,0.865"/>
-            <Button x:Name="SaveEntriesButton" Content="Save Entries" Margin="10" Command="{Binding SaveEntriesCommand}"/>
-            <Button x:Name="CreateEntryButton" Content="Create Entry" Margin="10" Command="{Binding FindAddIssueCommand}"/>
-        </UniformGrid>
-        <StackPanel VerticalAlignment="Top">
+        <StackPanel VerticalAlignment="Top" Height="138.8">
             <DataGrid x:Name="WorkEntryDataGrid" Margin="10" ItemsSource="{Binding WorkEntries}" SelectedItem="{Binding SelectedDataGridItem}" SelectionMode="Single" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Selected">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged}"/>
+                                <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Binding="{Binding Name}" ClipboardContentBinding="{x:Null}" Header="Title" MaxWidth="200" IsReadOnly="True"/>
+                    <DataGridTextColumn Binding="{Binding Name}" ClipboardContentBinding="{x:Null}" Header="Title" MaxWidth="100" IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding StartTime, Converter={StaticResource dateTimeConverter}}" ClipboardContentBinding="{x:Null}" Header="Start Time" IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding EndTime, Converter={StaticResource dateTimeConverter}}" ClipboardContentBinding="{x:Null}" Header="End Time" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding Description}" ClipboardContentBinding="{x:Null}" Header="Description" CanUserResize="False" IsReadOnly="True"/>
+                    <DataGridTextColumn Binding="{Binding Description}" ClipboardContentBinding="{x:Null}" Header="Description" CanUserResize="False" IsReadOnly="True" MaxWidth="100"/>
                 </DataGrid.Columns>
             </DataGrid>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Margin="10,10,10,0" VerticalAlignment="Top">
+            <Label x:Name="TitleLabel" Content="{Binding TodayDate, Converter={StaticResource titleConverter}}" Margin="0,0,0,5"/>
+            <controls:WorkEntryDetails DataContext="{Binding SelectedDataGridItem}" Width="Auto" VerticalAlignment="Stretch" Margin="0"/>
+            <UniformGrid Margin="0" Rows="2" Columns="2" VerticalAlignment="Top" MinHeight="125">
+                <Button x:Name="FetchEventsButton" Content="Fetch Events" Margin="10" Command="{Binding FetchEventsCommand}" RenderTransformOrigin="-0.892,0.865"/>
+                <Button x:Name="FetchIssuesButton" Content="Fetch Issues" Margin="10" Command="{Binding FetchIssuesCommand}" RenderTransformOrigin="-0.892,0.865"/>
+                <Button x:Name="SaveEntriesButton" Content="Save Entries" Margin="10" Command="{Binding SaveEntriesCommand}"/>
+                <Button x:Name="CreateEntryButton" Content="Create Entry" Margin="10" Command="{Binding FindAddIssueCommand}"/>
+            </UniformGrid>
+            <TextBox x:Name="TotalTimeTextbox" Text="Total time logged:" BorderThickness="0" Background="Transparent" Margin="0" MaxLength="5" TextWrapping="Wrap" IsReadOnly="True" VerticalAlignment="Top" VerticalContentAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -10,13 +10,17 @@
     <UserControl.Resources>
         <converters:TitleConverter x:Key="titleConverter"/>
         <converters:DateTimeConverter x:Key="dateTimeConverter"/>
+        <converters:DurationConverter x:Key="durationConverter"/>
         <Image x:Key="copyImage" Source="../copy-content.png"/>
     </UserControl.Resources>
     <StackPanel VerticalAlignment="Top" Margin="0">
         <TextBox x:Name="NameTextBox" TextWrapping="Wrap" Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,5"/>
         <TextBox x:Name="DescriptionTextBox" TextWrapping="Wrap" Text="{Binding Description,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" MinHeight="50" Margin="0,5" Height="20"/>
         <TextBox x:Name="StartDateTextBox" TextWrapping="Wrap" Text="{Binding StartTime, Converter={StaticResource dateTimeConverter},UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,5"/>
-        <TextBox x:Name="EndDateTextBox" TextWrapping="Wrap" Text="{Binding EndTime, Converter={StaticResource dateTimeConverter},UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,5"/>
+        <UniformGrid VerticalAlignment="Top" Columns="2" Rows="1">
+            <TextBox x:Name="EndDateTextBox" TextWrapping="Wrap" Text="{Binding EndTime, Converter={StaticResource dateTimeConverter}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,0,10,0"/>
+            <TextBox x:Name="DurationTextBox" TextWrapping="Wrap" Text="{Binding Duration, Converter={StaticResource durationConverter}}" VerticalAlignment="Top" Margin="10,0,0,0"/>
+        </UniformGrid>
         <TextBox x:Name="IdTextBox" TextWrapping="WrapWithOverflow" Text="{Binding Id}" Margin="0,5" VerticalAlignment="Top"/>
         <TextBox x:Name="SourceTextBox" TextWrapping="WrapWithOverflow" Text="{Binding Source}" Margin="0,5" VerticalAlignment="Top" IsReadOnly="True" Background="Transparent" BorderThickness="0"/>
         <Grid Margin="0,5">

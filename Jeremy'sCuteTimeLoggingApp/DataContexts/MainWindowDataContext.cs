@@ -54,7 +54,6 @@ namespace Jeremy_sCuteTimeLoggingApp.DataContexts
         }
 
 
-
         private DateTime todayDate = DateTime.Now.Date;
         public DateTime TodayDate { get { return todayDate; } set { todayDate = value; } }
 

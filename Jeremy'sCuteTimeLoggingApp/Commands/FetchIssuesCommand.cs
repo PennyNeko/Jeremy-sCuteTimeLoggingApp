@@ -24,8 +24,6 @@ namespace Jeremy_sCuteTimeLoggingApp.Commands
 
         public async void Execute(object parameter)
         {
-            IssueSuggestionsFetcher suggestionsFetcher = new IssueSuggestionsFetcher();
-            suggestionsFetcher.GetWorkEntriesAsync("1");
             var issueFetcher = new IssueFetcher(App.JiraClient);
             var issues = await issueFetcher.GetRecentIssuesAsync();
 

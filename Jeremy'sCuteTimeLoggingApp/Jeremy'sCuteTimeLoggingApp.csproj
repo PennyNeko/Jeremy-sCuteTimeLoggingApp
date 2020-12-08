@@ -102,6 +102,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\DateTimeConverter.cs" />
+    <Compile Include="Converters\DurationConverter.cs" />
     <Compile Include="IssueSuggestion.cs" />
     <Compile Include="IssueSuggestionsFetcher.cs" />
     <Compile Include="UserControls\WorkEntryDetails.xaml.cs">

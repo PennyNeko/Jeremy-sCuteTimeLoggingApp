@@ -39,7 +39,7 @@ namespace Jeremy_sCuteTimeLoggingApp.Commands
 
         public async void AddWorkLog(WorkEntry workEntry)
         {
-              await App.JiraClient.Issues.AddWorklogAsync(workEntry.Id, new Worklog(((int)(workEntry.EndTime-workEntry.StartTime).TotalMinutes).ToString()+"m", workEntry.StartTime));
+              await App.JiraClient.Issues.AddWorklogAsync(workEntry.Id, new Worklog($"{workEntry.Duration.TotalMinutes}m", workEntry.StartTime));
         }
     }
 }
