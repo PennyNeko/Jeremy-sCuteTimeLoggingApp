@@ -120,7 +120,6 @@
     <Compile Include="Commands\FetchIssuesCommand.cs" />
     <Compile Include="IssueFetcher.cs" />
     <Compile Include="Commands\FetchEventsCommand.cs" />
-    <Compile Include="DataContexts\WorkEntryDataContext.cs" />
     <Compile Include="DataContexts\MainWindowDataContext.cs" />
     <Compile Include="Converters\TitleConverter.cs" />
     <Compile Include="WorkEntry.cs" />
@@ -149,7 +148,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Jeremy%27sCuteTimeLoggingApp_TemporaryKey.pfx" />
-    <None Include="json1.json" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

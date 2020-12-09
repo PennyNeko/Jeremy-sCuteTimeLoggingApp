@@ -8,21 +8,21 @@ namespace Jeremy_sCuteTimeLoggingApp.Commands
     class CopyToClipboardCommand : ICommand
     {
         public event EventHandler CanExecuteChanged { add { CommandManager.RequerySuggested += value; } remove { CommandManager.RequerySuggested -= value; } }
-        private WorkEntryDataContext _dataContext;
+        private MainWindowDataContext _dataContext;
 
-        public CopyToClipboardCommand(WorkEntryDataContext dataContext)
+        public CopyToClipboardCommand(MainWindowDataContext dataContext)
         {
             _dataContext = dataContext;
         }
 
         public bool CanExecute(object parameter)
         {
-            return _dataContext.WorkEntry != null;
+            return _dataContext.SelectedDataGridItem != null;
         }
 
         public void Execute(object parameter)
         {
-            Clipboard.SetData(DataFormats.Text, _dataContext.WorkEntry.Link);
+            Clipboard.SetData(DataFormats.Text, _dataContext.SelectedDataGridItem.Link);
         }
     }
 }

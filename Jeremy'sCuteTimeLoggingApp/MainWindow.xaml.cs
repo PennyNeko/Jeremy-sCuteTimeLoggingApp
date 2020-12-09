@@ -1,5 +1,4 @@
 ﻿using Jeremy_sCuteTimeLoggingApp.DataContexts;
-using Jeremy_sCuteTimeLoggingApp.UserControls;
 using System.Windows;
 
 namespace Jeremy_sCuteTimeLoggingApp

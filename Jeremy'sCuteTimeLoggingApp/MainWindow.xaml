@@ -7,7 +7,6 @@
         xmlns:dataContexts="clr-namespace:Jeremy_sCuteTimeLoggingApp.DataContexts"
         xmlns:converters="clr-namespace:Jeremy_sCuteTimeLoggingApp.Converters"
         xmlns:src="Jeremy_sCuteTimeLoggingApp.MainWindow"
-        xmlns:controls="clr-namespace:Jeremy_sCuteTimeLoggingApp.UserControls"
         xmlns:Properties="clr-namespace:Jeremy_sCuteTimeLoggingApp.Properties" xmlns:Forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" d:DataContext="{d:DesignInstance Type={x:Type dataContexts:MainWindowDataContext}}" x:Class="Jeremy_sCuteTimeLoggingApp.MainWindow"
     mc:Ignorable="d"
         Title="Jeremy's Cute Time Logging App~" Height="475" Width="800">
@@ -15,6 +14,8 @@
         <converters:DateTimeConverter x:Key="dateTimeConverter"/>
         <converters:TitleConverter x:Key="titleConverter"/>
         <converters:TotalTimeConverter x:Key="totalTimeConverter"/>
+        <converters:DurationConverter x:Key="durationConverter"/>
+        <Image x:Key="copyImage" Source="copy-content.png"/>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -23,7 +24,21 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="1" Margin="10,10,10,0" VerticalAlignment="Top">
             <Label x:Name="TitleLabel" Content="{Binding TodayDate, Converter={StaticResource titleConverter}}" Margin="0,0,0,5"/>
-            <controls:WorkEntryDetails DataContext="{Binding SelectedDataGridItem}" Width="Auto" VerticalAlignment="Stretch" Margin="0"/>
+            <StackPanel>
+                <TextBox x:Name="NameTextBox" TextWrapping="Wrap" Text="{Binding SelectedDataGridItem.Name, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,5"/>
+                <TextBox x:Name="DescriptionTextBox" TextWrapping="Wrap" Text="{Binding SelectedDataGridItem.Description, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" MinHeight="50" Margin="0,5" Height="20"/>
+                <TextBox x:Name="StartDateTextBox" TextWrapping="Wrap" Text="{Binding SelectedDataGridItem.StartTime, Converter={StaticResource dateTimeConverter}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,5"/>
+                <UniformGrid VerticalAlignment="Top" Columns="2" Rows="1" Margin="0">
+                    <TextBox x:Name="EndDateTextBox" TextWrapping="Wrap" Text="{Binding SelectedDataGridItem.EndTime, Converter={StaticResource dateTimeConverter}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,0,10,0"/>
+                    <TextBox x:Name="DurationTextBox" TextWrapping="Wrap" Text="{Binding SelectedDataGridItem.Duration, Converter={StaticResource durationConverter}}" VerticalAlignment="Top" Margin="10,0,0,0"/>
+                </UniformGrid>
+                <TextBox x:Name="IdTextBox" TextWrapping="WrapWithOverflow" Text="{Binding SelectedDataGridItem.Id}" Margin="0,5" VerticalAlignment="Top"/>
+                <TextBox x:Name="SourceTextBox" TextWrapping="WrapWithOverflow" Text="{Binding SelectedDataGridItem.Source}" Margin="0,5" VerticalAlignment="Top" IsReadOnly="True" Background="Transparent" BorderThickness="0"/>
+                <Grid Margin="0,5">
+                    <TextBox x:Name="LinkTextBox" TextWrapping="WrapWithOverflow" Text="{Binding SelectedDataGridItem.Link}" Margin="0" VerticalAlignment="Top" IsReadOnly="True" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left"/>
+                    <Button x:Name="CopyToClipboardButton" Content="{StaticResource copyImage}" Command="{Binding CopyToClipboardCommand}" HorizontalAlignment="Right" Height="22" Margin="0" Width="21" RenderTransformOrigin="0.2,0.25" Foreground="{x:Null}" VerticalContentAlignment="Top" HorizontalContentAlignment="Center"/>
+                </Grid>
+            </StackPanel>
             <UniformGrid Margin="0" Rows="2" Columns="2" VerticalAlignment="Top" MinHeight="125">
                 <Button x:Name="FetchEventsButton" Content="Fetch Events" Margin="10" Command="{Binding FetchEventsCommand}" RenderTransformOrigin="-0.892,0.865"/>
                 <Button x:Name="FetchIssuesButton" Content="Fetch Issues" Margin="10" Command="{Binding FetchIssuesCommand}" RenderTransformOrigin="-0.892,0.865"/>

@@ -18,6 +18,9 @@ namespace Jeremy_sCuteTimeLoggingApp.DataContexts
         private ICommand fetchIssuesCommand;
         public ICommand FetchIssuesCommand { get { if (fetchIssuesCommand == null) { fetchIssuesCommand = new FetchIssuesCommand(this); } return fetchIssuesCommand; } set { fetchIssuesCommand = value; } }
 
+        private ICommand copyToClipboardCommand;
+        public ICommand CopyToClipboardCommand { get { if (copyToClipboardCommand == null) { copyToClipboardCommand = new CopyToClipboardCommand(this); } return copyToClipboardCommand; } set { copyToClipboardCommand = value; } }
+
         private ICommand saveEntriesCommand;
         public ICommand SaveEntriesCommand
         {
@@ -53,6 +56,8 @@ namespace Jeremy_sCuteTimeLoggingApp.DataContexts
             }
         }
 
+        private TimeSpan totalTimeLogged;
+        public TimeSpan TotalTimeLogged { get { return totalTimeLogged; } set { totalTimeLogged = CalculateTotalLoggedTime(WorkEntries); } }
 
         private DateTime todayDate = DateTime.Now.Date;
         public DateTime TodayDate { get { return todayDate; } set { todayDate = value; } }
@@ -74,6 +79,16 @@ namespace Jeremy_sCuteTimeLoggingApp.DataContexts
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        private TimeSpan CalculateTotalLoggedTime(ObservableCollection<WorkEntry> workEntries)
+        {
+            TimeSpan totalTime = TimeSpan.Zero;
+            foreach (var item in workEntries)
+            {
+                totalTime += item.Duration;
+            }
+            return totalTime;
         }
     }
 }
