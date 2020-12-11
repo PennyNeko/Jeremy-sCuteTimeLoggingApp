@@ -45,7 +45,7 @@
                 <Button x:Name="SaveEntriesButton" Content="Save Entries" Margin="10" Command="{Binding SaveEntriesCommand}"/>
                 <Button x:Name="CreateEntryButton" Content="Create Entry" Margin="10" Command="{Binding FindAddIssueCommand}"/>
             </UniformGrid>
-            <TextBox x:Name="TotalTimeTextbox" Text="{Binding TotalTimeLogged}" BorderThickness="0" Background="Transparent" Margin="0" MaxLength="5" TextWrapping="Wrap" IsReadOnly="True" VerticalAlignment="Top" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="TotalTimeTextbox" Text="{Binding TotalTimeLogged, Mode=OneWay, Converter={StaticResource totalTimeConverter}}" BorderThickness="0" Background="Transparent" Margin="0" MaxLength="5" TextWrapping="Wrap" IsReadOnly="True" VerticalAlignment="Top" VerticalContentAlignment="Center"/>
         </StackPanel>
         <DataGrid x:Name="WorkEntryDataGrid" Margin="10" ItemsSource="{Binding WorkEntries}" SelectedItem="{Binding SelectedDataGridItem}" SelectionMode="Single" AutoGenerateColumns="False" ScrollViewer.CanContentScroll="False" VerticalAlignment="Top">
             <DataGrid.Columns>

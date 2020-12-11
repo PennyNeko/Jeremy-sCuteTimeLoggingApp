@@ -23,7 +23,6 @@ namespace Jeremy_sCuteTimeLoggingApp
         string _creator;
         string _source;
         string _id;
-        TimeSpan _duration;
 
         public WorkEntry(bool isSelected, string id, string name, string description, DateTime startTimestamp, DateTime endTimestamp, string link, string creator, string source)
         {
@@ -48,12 +47,12 @@ namespace Jeremy_sCuteTimeLoggingApp
         { get { return _description; } set { _description = value; OnPropertyChanged(); } }
         //start
         public DateTime StartTime
-        { get { return _startTime; } set { SetTimes(value, EndTime); } }
+        { get { return _startTime; } set { _startTime = value; OnPropertyChanged(); OnPropertyChanged(nameof(Duration)); OnDurationChanged(EventArgs.Empty); } }
         //end
         public DateTime EndTime
-        { get { return _endTime; } set { _endTime = value; SetTimes(StartTime, value); } }
+        { get { return _endTime; } set { _endTime = value; OnPropertyChanged(); OnPropertyChanged(nameof(Duration)); OnDurationChanged(EventArgs.Empty); } }
         public TimeSpan Duration
-        { get { return _duration; } set { SetTimes(StartTime, StartTime + value); } }
+        { get => _endTime - _startTime; set { EndTime = StartTime + value; OnDurationChanged(EventArgs.Empty); } }
         //webLink
         public string Link
         { get { return _link; } set { _link = value; OnPropertyChanged(); } }
@@ -63,14 +62,10 @@ namespace Jeremy_sCuteTimeLoggingApp
         public string Source
         { get { return _source; } set { _source = value; OnPropertyChanged(); } }
 
-        private void SetTimes(DateTime startTime, DateTime endTime)
+        public event EventHandler DurationChanged;
+        protected void OnDurationChanged(EventArgs e)
         {
-            _startTime = startTime;
-            _endTime = endTime;
-            _duration = endTime - startTime;
-            OnPropertyChanged(nameof(StartTime));
-            OnPropertyChanged(nameof(EndTime));
-            OnPropertyChanged(nameof(Duration));
+            DurationChanged?.Invoke(this, e);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

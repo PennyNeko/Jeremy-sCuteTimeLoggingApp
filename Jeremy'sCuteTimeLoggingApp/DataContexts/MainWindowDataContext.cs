@@ -1,6 +1,7 @@
 ﻿using Jeremy_sCuteTimeLoggingApp.Commands;
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Data;
@@ -9,8 +10,7 @@ using System.Windows.Input;
 namespace Jeremy_sCuteTimeLoggingApp.DataContexts
 {
     public class MainWindowDataContext : INotifyPropertyChanged
-        {
-        string[] scopes = new string[] { "Calendars.Read" };
+    {
 
         private ICommand fetchEventsCommand;
         public ICommand FetchEventsCommand { get { if (fetchEventsCommand == null) { fetchEventsCommand = new FetchEventsCommand(this); } return fetchEventsCommand; } set { fetchEventsCommand = value; } }
@@ -43,7 +43,6 @@ namespace Jeremy_sCuteTimeLoggingApp.DataContexts
         public CollectionViewSource WorkEntriesViewSource { get { return workEntriesViewSource; } set { workEntriesViewSource = value; } }
 
         
-        private ObservableCollection<WorkEntry> workEntries = new ObservableCollection<WorkEntry>();
         private WorkEntry selectedDataGridItem;
 
         public WorkEntry SelectedDataGridItem
@@ -56,12 +55,12 @@ namespace Jeremy_sCuteTimeLoggingApp.DataContexts
             }
         }
 
-        private TimeSpan totalTimeLogged;
-        public TimeSpan TotalTimeLogged { get { return totalTimeLogged; } set { totalTimeLogged = CalculateTotalLoggedTime(WorkEntries); } }
+        public TimeSpan TotalTimeLogged { get => CalculateTotalLoggedTime(workEntries); }
 
         private DateTime todayDate = DateTime.Now.Date;
         public DateTime TodayDate { get { return todayDate; } set { todayDate = value; } }
 
+        private ObservableCollection<WorkEntry> workEntries = new ObservableCollection<WorkEntry>();
         public ObservableCollection<WorkEntry> WorkEntries
         {
             get
@@ -71,9 +70,24 @@ namespace Jeremy_sCuteTimeLoggingApp.DataContexts
             set
             {
                 workEntries = value;
+                workEntries.CollectionChanged += (sender, e) =>
+                {
+                    if (e.Action == NotifyCollectionChangedAction.Add)
+                    {
+                        (e.NewItems[0] as WorkEntry).DurationChanged += (s, ev) =>
+                        {
+                            OnPropertyChanged(nameof(TotalTimeLogged));
+                        };
+                    }
+                };
+                OnPropertyChanged(nameof(TotalTimeLogged));
+
                 OnPropertyChanged();
             }
         }
+
+        
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)
